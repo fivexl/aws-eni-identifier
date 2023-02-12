@@ -2,9 +2,11 @@
 Identify to which AWS service network interface is associated
 
 # Installation
+
 ```bash
-pip install aws-eni-identifier
+pip install git+https://github.com/fivexl/aws-eni-identifier.git
 ```
+TODO: pip install aws-eni-identifier
 
 # Usage
 aws-eni-identifier does not connect to AWS by itself, so you will need to load data wit aws-cli
