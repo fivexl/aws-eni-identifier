@@ -5,6 +5,8 @@ description = ""
 authors = ["Eremin <haru.eaa@gmail.com>"]
 readme = "README.md"
 packages = [{include = "aws_eni_identifier"}]
+homepage = "https://github.com/fivexl/aws-eni-identifier"
+repository = "https://github.com/fivexl/aws-eni-identifier"
 
 [tool.poetry.scripts]
 aws-eni-identifier = "aws_eni_identifier.cli:main"
