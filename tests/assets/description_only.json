@@ -1,0 +1,169 @@
+[
+    {
+        "description": "ENI managed by APIGateway",
+        "result": {
+            "svc": "apigw"
+        }
+    },
+    {
+        "description": "AWS CodeStar Connections",
+        "result": {
+            "svc": "codestar"
+        }
+    },
+    {
+        "description": "DAX",
+        "result": {
+            "svc": "dax"
+        }
+    },
+    {
+        "description": "AWS created network interface for directory d-90672d6b72.",
+        "result": {
+            "svc": "dir",
+            "name": "d-90672d6b72"
+        }
+    },
+    {
+        "description": "DMSNetworkInterface",
+        "result": {
+            "svc": "dms"
+        }
+    },
+    {
+        "description": "arn:aws:ecs:us-west-2:123456789012:attachment/XXXX",
+        "result": {
+            "svc": "ecs",
+            "name": "XXXX"
+        }
+    },
+    {
+        "description": "EFS mount target for fs-1234567 (fsmt-1234567)",
+        "result": {
+            "svc": "fsmt",
+            "name": "fsmt-1234567",
+            "fs": "fs-1234567"
+        }
+    },
+    {
+        "description": "ElastiCache test-1",
+        "result": {
+            "svc": "elasticache",
+            "name": "test-1"
+        }
+    },
+    {
+        "description": "AWS ElasticMapReduce",
+        "result": {
+            "svc": "emr"
+        }
+    },
+    {
+        "description": "CloudHSM Managed Interface",
+        "result": {
+            "svc": "hsm"
+        }
+    },
+    {
+        "description": "CloudHsm ENI",
+        "result": {
+            "svc": "hsmv2"
+        }
+    },
+    {
+        "description": "AWS Lambda VPC ENI-test_lambda_function-6b142b21-f35f-44bd-8084-765907e0dedc",
+        "result": {
+            "svc": "lambda",
+            "name": "test_lambda_function"
+        }
+    },
+    {
+        "description": "Interface for NAT Gateway nat-06f54d43caf44bf8d",
+        "result": {
+            "svc": "nat",
+            "name": "nat-06f54d43caf44bf8d"
+        }
+    },
+    {
+        "description": "RDSNetworkInterface",
+        "result": {
+            "svc": "rds"
+        }
+    },
+    {
+        "description": "RedshiftNetworkInterface",
+        "result": {
+            "svc": "redshift"
+        }
+    },
+    {
+        "description": "Network Interface for Transit Gateway Attachment tgw-attach-XXX",
+        "result": {
+            "svc": "tgw",
+            "name": "tgw-attach-XXX"
+        }
+    },
+    {
+        "description": "VPC Endpoint Interface vpce-0472c5d3fc4ce1de4",
+        "result": {
+            "svc": "vpce",
+            "name": "vpce-0472c5d3fc4ce1de4"
+        }
+    },
+    {
+        "description": "Amazon EKS example-cluster",
+        "result": {
+            "svc": "eks",
+            "name": "example-cluster"
+        }
+    },
+    {
+        "description": "ES test",
+        "result": {
+            "svc": "es",
+            "name": "test"
+        }
+    },
+    {
+        "description": "ELB app/test-app/3d20737b50b4b66e",
+        "result": {
+            "svc": "elb-app",
+            "name": "test-app"
+        }
+    },
+    {
+        "description": "ELB net/test-net/c973bda47de90e99",
+        "result": {
+            "svc": "elb-net",
+            "name": "test-net"
+        }
+    },
+    {
+        "description": "ELB gwy/test-gwy/3a85ce44e6caa0af",
+        "result": {
+            "svc": "elb-gwy",
+            "name": "test-gwy"
+        }
+    },
+    {
+        "description": "ELB test-elb",
+        "result": {
+            "svc": "elb",
+            "name": "test-elb"
+        }
+    },
+    {
+        "description": "Network interface for DBProxy proxy-test-database-1",
+        "result": {
+            "svc": "rds-proxy",
+            "name": "proxy-test-database-1"
+        }
+    },
+    {
+        "description": "Amazon Kinesis Firehose - test.",
+        "result": {
+            "svc": "kinesis-firehose",
+            "name": "test"
+        }
+    }
+]

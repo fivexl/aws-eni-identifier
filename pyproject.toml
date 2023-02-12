@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "aws-eni-identifier"
+version = "0.1.0"
+description = ""
+authors = ["Eremin <haru.eaa@gmail.com>"]
+readme = "README.md"
+packages = [{include = "aws_eni_identifier"}]
+
+[tool.poetry.scripts]
+aws-eni-identifier = "aws_eni_identifier.cli:main"
+
+[tool.poetry.dependencies]
+python = "^3.9" # https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+tabulate = "^0.9.0"
+glom = "^23.1.1"
+click = "^8.1.3"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
