@@ -10,7 +10,7 @@ pip install aws-eni-identifier
 ```
 
 # Usage
-aws-eni-identifier does not connect to AWS by itself, so you will need to load data wit aws-cli
+aws-eni-identifier does not connect to AWS by itself, so you will need to load data with aws-cli
 
 Login to aws:
 ```bash
