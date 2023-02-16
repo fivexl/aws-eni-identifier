@@ -31,7 +31,7 @@ REGEXES = {
 }
 
 
-def extract_info(description: str) -> Optional[dict]:
+def extract_description_info(description: str) -> Optional[dict]:
     for svc, regex in REGEXES.items():
         if (match := re.search(regex, description)) is not None:
             info = match.groupdict()

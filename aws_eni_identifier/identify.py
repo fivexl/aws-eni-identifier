@@ -1,6 +1,6 @@
 from glom import glom
 
-from aws_eni_identifier import description
+import aws_eni_identifier as aei
 
 
 def identify_eni(eni: dict) -> dict:
@@ -13,7 +13,7 @@ def identify_eni(eni: dict) -> dict:
         info |= extra
 
     elif dscr := eni.get("Description"):
-        if _info := description.extract_info(dscr):
+        if _info := aei.extract_description_info(dscr):
             info |= _info
 
     return info
