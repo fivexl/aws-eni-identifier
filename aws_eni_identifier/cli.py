@@ -1,85 +1,76 @@
 import itertools
 import json
 import sys
-from typing import IO, Literal, Union
 
-import click
-import tabulate
+import typer
 from glom import glom
+from rich.console import Console
+from rich.table import Table
 
-from aws_eni_identifier import identify
-
-
-@click.command()
-@click.argument("ExtraFields", nargs=-1)
-@click.option("-i", "--input", type=click.File(), default=sys.stdin, help="Input file name")
-@click.option("-o", "--output", type=click.File("w"), default=sys.stdout, help="Output file name")
-@click.option("-ot", "--output-type", type=click.Choice(["table", "json"]), default="table", help="How to return output")
-def main(extrafields: list[str], input: IO, output: IO, output_type: Union[Literal["table"], Literal["json"]]):
-    """Identify AWS network interfaces owner service. stdin
-
-    aws sso login --profile qameta-prod
-     aws ec2 describe-network-interfaces --profile qameta-prod | aws-eni-identifier
-    aws-vault exec qameta-prod
+import aws_eni_identifier as aei
 
 
-    # Extra fields
-    AvailabilityZone
-    Attachment.InstanceOwnerId
-    InterfaceType
+def partialy_sorted(_list: list, order: list) -> list:
+    unordered = [e for e in _list if e not in order]
+    mapping = order + unordered
+    return sorted(_list, key=mapping.index)
 
-    Groups.GroupName
+
+def create_table(_list: list[dict], columns_order: list[str]):
+    headers = partialy_sorted(list({key for _dict in _list for key in _dict.keys()}), order=columns_order)
+
+    table = Table(*headers, show_lines=True)
+    for _dict in _list:
+        table.add_row(*[_dict.get(key) for key in headers])
+    return table
+
+
+app = typer.Typer()
+
+DEFAULT_EXTRA_FIELDS = ["sg-names"]
+
+
+@app.command()
+def main(
+    add_column: list[str] = typer.Option(default=DEFAULT_EXTRA_FIELDS, help="Add extra columns: --add-column Attachment.Status --add-column AvailabilityZone"),
+    input: typer.FileText = typer.Option(default="-", help="File path. STDIN by default", show_default=False),
+    output: typer.FileTextWrite = typer.Option(default="-", help="File path. STDOUT by default", show_default=False),
+    _json: bool = False,
+):
+    """Identify AWS network interfaces owner service.
+
+    aws ec2 describe-network-interfaces --profile my-profile | aws-eni-identifier
     """
-    with input:
-        try:
-            enis = json.load(input)
-        except json.decoder.JSONDecodeError as e:
-            click.echo("Invalid JSON")
-            sys.exit(1)
-
-    if isinstance(enis, dict) and (enis.get("NetworkInterfaces") is not None):
-        enis = enis["NetworkInterfaces"]
+    try:
+        enis = json.load(input)["NetworkInterfaces"]
+    except json.decoder.JSONDecodeError as e:
+        typer.echo(f"JSONDecodeError: {e}", err=True)
+        sys.exit(1)
 
     result = []
     for eni in enis:
-        info = identify.identify_eni(eni)
-        extra = get_extra_info(eni, set(extrafields))
-        result.append(info | extra)
+        info = aei.identify_eni(eni)
+        result.append(info | add_columns(eni, columns=add_column))
 
-    if output_type == "table":
-        result = tabulate.tabulate(normalize_keys(result), headers="keys", tablefmt="simple_grid", maxcolwidths=50, missingval="?")
-    elif output_type == "json":
-        result = json.dumps(result)
-
-    output.write(result)
-
-
-DEFAULT_EXTRA_FIELDS = {"sg-names"}
+    if _json:
+        output.write(json.dumps(result))
+    else:
+        console = Console()
+        table = create_table(result, columns_order=["eni", "svc", "name"])
+        console.print(table, new_line_start=True)
 
 
-def get_extra_info(eni, extra_fields: set[str]):
+def add_columns(eni: dict, columns: list[str]):
     result = {}
 
-    extra_fields = extra_fields | DEFAULT_EXTRA_FIELDS
-    for field in extra_fields:
-        if field == "sg-names":
+    for column in columns:
+        if column == "sg-names":
             extra = glom(eni, ("Groups", ["GroupName"]))
-        elif field == "sg-ids":
+        elif column == "sg-ids":
             extra = glom(eni, ("Groups", ["GroupId"]))
         else:
-            extra = glom(eni, field, default=None)
+            extra = glom(eni, column, default=None)
         if isinstance(extra, list):
-            extra = " ".join(extra)
-        result[field] = extra
+            extra = ", ".join(extra)
+        result[column] = extra
     return result
-
-
-def normalize_keys(_list: list[dict]):
-    all_keys = set()
-    for _dict in _list:
-        all_keys.update(_dict.keys())
-
-    for _dict, key in itertools.product(_list, all_keys):
-        if key not in _dict.keys():
-            _dict[key] = "?"
-    return _list
