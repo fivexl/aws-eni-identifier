@@ -30,22 +30,32 @@ aws-eni-identifier -i ni.json
 
 ## Show extra columns
 ```bash
-aws ec2 describe-network-interfaces | aws-eni-identifier --add-column Attachment.Status --add-column AvailabilityZone
+aws ec2 describe-network-interfaces | 
+aws-eni-identifier \
+    --add-column Attachment.Status \
+    --add-column AvailabilityZone
 ```
 ![extra-columns.png](docs/extra-columns.png?raw=true)
 
 ## Filter
 Find unused network interfaces:
-```bash
-aws ec2 describe-network-interfaces --filters "Name=status,Values=available" | aws-eni-identifier
+```bash 
+aws ec2 describe-network-interfaces \
+    --filters "Name=status,Values=available" |
+aws-eni-identifier
+```
+Find AWS resource by IP address (you can use public or private IP address)
+```bash 
+export IP='51.21.223.193';
+aws ec2 describe-network-interfaces \
+    --query "NetworkInterfaces[?PrivateIpAddresses[?PrivateIpAddress=='${IP}' || Association.PublicIp=='${IP}']]" | 
+aws-eni-identifier
 ```
 Determine what is using specific AWS network interface
 ```bash
-aws ec2 describe-network-interfaces --network-interface-ids eni-0068ac3f8786de58a | aws-eni-identifier
-```
-Find AWS resource by IP address (you can use public or private IP address)
-```bash
-export IP='52.28.222.192'; aws ec2 describe-network-interfaces --query "NetworkInterfaces[?PrivateIpAddresses[?PrivateIpAddress=='${IP}' || Association.PublicIp=='${IP}']]"
+aws ec2 describe-network-interfaces \
+    --network-interface-ids eni-0068ac3f8786de59a | 
+aws-eni-identifier
 ```
 
 You can find more information about filters and queries in [AWS documentation](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-network-interfaces.html#options)
