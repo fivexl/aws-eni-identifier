@@ -16,7 +16,9 @@ def partialy_sorted(_list: list, order: list) -> list:
 
 
 def create_table(_list: list[dict], columns_order: list[str]):
-    headers = partialy_sorted(list({key for _dict in _list for key in _dict.keys()}), order=columns_order)
+    headers = partialy_sorted(
+        list({key for _dict in _list for key in _dict.keys()}), order=columns_order
+    )
 
     table = Table(*headers, show_lines=True)
     for _dict in _list:
@@ -31,9 +33,16 @@ DEFAULT_EXTRA_FIELDS = ["sg-names"]
 
 @app.command()
 def main(
-    add_column: list[str] = typer.Option(default=DEFAULT_EXTRA_FIELDS, help="Add extra columns: --add-column Attachment.Status --add-column AvailabilityZone"),
-    input: typer.FileText = typer.Option(default="-", help="File path. STDIN by default", show_default=False),
-    output: typer.FileTextWrite = typer.Option(default="-", help="File path. STDOUT by default", show_default=False),
+    add_column: list[str] = typer.Option(
+        default=DEFAULT_EXTRA_FIELDS,
+        help="Add extra columns: --add-column Attachment.Status --add-column AvailabilityZone",
+    ),
+    input: typer.FileText = typer.Option(
+        default="-", help="File path. STDIN by default", show_default=False
+    ),
+    output: typer.FileTextWrite = typer.Option(
+        default="-", help="File path. STDOUT by default", show_default=False
+    ),
     _json: bool = False,
 ):
     """Identify AWS network interfaces owner service.
@@ -41,7 +50,11 @@ def main(
     aws ec2 describe-network-interfaces --profile my-profile | aws-eni-identifier
     """
     try:
-        enis = json.load(input)["NetworkInterfaces"]
+        _loaded = json.load(input)
+        if isinstance(_loaded, dict):
+            enis = _loaded.get("NetworkInterfaces", [])
+        else:
+            enis = _loaded
     except json.decoder.JSONDecodeError as e:
         typer.echo(f"JSONDecodeError: {e}", err=True)
         sys.exit(1)
