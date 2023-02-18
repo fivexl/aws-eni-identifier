@@ -15,24 +15,8 @@ def identify_eni(eni: dict) -> dict:
     elif dscr := eni.get("Description"):
         if _info := aei.extract_description_info(dscr):
             info |= _info
-
+    # TODO: "RequesterId", "Attachment.InstanceOwnerId",
+    # TODO: "InterfaceType"
+    # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2.html#EC2.Client.describe_network_interfaces
+    # api_gateway_managed | aws_codestar_connections_managed | branch | efa | gateway_load_balancer | gateway_load_balancer_endpoint | global_accelerator_managed | interface | iot_rules_managed | lambda | load_balancer | nat_gateway | network_load_balancer | quicksight | transit_gateway | trunk | vpc_endpoint
     return info
-
-
-# z = {"Attachment.InstanceOwnerId" "InterfaceType"}
-# if eni_object.attachment_owner_id is not None:
-#     if eni_object.attachment_owner_id == 'amazon-rds' or eni_object.description.startswith('Network interface for DBProxy '):
-#         return RDS(info)
-#     if eni_object.attachment_owner_id == 'amazon-elb':
-#         return ELB(info)
-#     if eni_object.attachment_owner_id == 'amazon-aws' and eni_object.type == 'lambda':
-#         return Lambda(info)
-#     if eni_object.attachment_owner_id == 'amazon-aws' and eni_object.type == 'vpc_endpoint':
-#         return VPCElasticNetworkInterface(info)
-#     if eni_object.attachment_owner_id == 'amazon-aws' and eni_object.type == 'nat_gateway':
-#         return NATGateway(info)
-#     if eni_object.attachment_owner_id == 'amazon-aws' and eni_object.type == 'global_accelerator_managed':
-#         return GlobalAccelerator(info)
-
-#     if eni_object.attachment_owner_id == 'amazon-aws' and eni_object.description.startswith('EFS mount target for '):
-#         return ElasticFileSystemEFSFileSystem(info)
