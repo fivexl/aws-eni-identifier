@@ -12,4 +12,4 @@ def json_load(json_path: str):
 
 @pytest.mark.parametrize("description, result", [(test["description"], test["result"]) for test in json_load("./tests/assets/description_only.json")])
 def test_description_regexes(description, result):
-    assert result == aws_eni_identifier.description.extract_info(description)
+    assert result == aws_eni_identifier.extract_description_info(description)
