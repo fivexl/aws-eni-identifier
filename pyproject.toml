@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aws-eni-identifier"
-version = "0.1.3"
+version = "0.1.4"
 description = "Identify to which AWS service network interface is associated"
 authors = ["Eremin <haru.eaa@gmail.com>"]
 readme = "README.md"
