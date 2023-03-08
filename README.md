@@ -2,7 +2,7 @@
 # AWS ENI Identifier
 Identify to which AWS service network interface is associated
 
-![aws-eni-identifier-cli.png](docs/usage.gif?raw=true)
+![aws-eni-identifier-cli.png](https://github.com/fivexl/aws-eni-identifier/raw/master/docs/usage.gif?raw=true)
 
 # Installation
 
@@ -36,7 +36,7 @@ aws-eni-identifier \
     --add-column Attachment.Status \
     --add-column AvailabilityZone
 ```
-![extra-columns.png](docs/extra-columns.png?raw=true)
+![extra-columns.png](https://github.com/fivexl/aws-eni-identifier/raw/master/docs/extra-columns.png?raw=true)
 
 ## Filter
 Find unused network interfaces:
